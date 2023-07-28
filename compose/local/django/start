@@ -1,0 +1,16 @@
+#!/bin/sh
+# -o: option
+# exit the script immediately if any command exits with a non-zero status
+set -o errexit
+# exit the script if it tries to use an undefined variable
+set -o nounset
+
+
+# Phải thêm 0.0.0.0:8000 thì mới chạy được. Giả sử không có, khi ta chạy container với port 8000:8000 chẳng hạn,
+# container sẽ lắng nghe được port 8000, nghĩa là từ máy host chạy port 8000 sẽ access được container và gọi được
+# lệnh chạy server. Tuy nhiên, server mặc định khi không chỉ cho IP nào sẽ chạy loopback interface, tức 127.0.0.1.
+# IP loopback này KHÔNG PHẢI của máy host mà của container. Nên khi máy host cố access sẽ không nhận được data mặc
+# dù server vẫn đang chạy. Muốn khắc phục phải chỉ định IP 0.0.0.0:8000, tức đón nhận MỌI local IP port 8000.
+# Và đồng thời, trong setting app cũng phải ALLOW_HOST là host máy thì mới được.
+pipenv run python3 manage.py migrate
+pipenv run python3 manage.py runserver 0.0.0.0:8000

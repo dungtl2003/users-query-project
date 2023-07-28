@@ -1,0 +1,29 @@
+version: '3'
+
+volumes:
+  users_query_local_postgres_data:
+  users_query_local_postgres_data_backups:
+
+services:
+  django:
+    build:
+      dockerfile: ./compose/local/django/Dockerfile
+    image: users_query_local_project
+    container_name: users_query_local_project
+    # override for testing purpose
+    volumes:
+      - .:/django_users_query_app
+    depends_on:
+      - postgres
+    ports:
+      - '8000:8000'
+    command: /start
+
+  postgres:
+    image: postgres:15
+    container_name: users_query_postgresql
+    volumes:
+      - users_query_local_postgres_data:/var/lib/postgresql/data
+      - users_query_local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.postgres
