@@ -10,9 +10,6 @@ services:
       dockerfile: ./compose/local/django/Dockerfile
     image: users_query_local_project
     container_name: users_query_local_project
-    # override for testing purpose
-    volumes:
-      - .:/django_users_query_app
     depends_on:
       - postgres
     ports:

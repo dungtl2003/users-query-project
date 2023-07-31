@@ -11,6 +11,6 @@ set -o nounset
 # lệnh chạy server. Tuy nhiên, server mặc định khi không chỉ cho IP nào sẽ chạy loopback interface, tức 127.0.0.1.
 # IP loopback này KHÔNG PHẢI của máy host mà của container. Nên khi máy host cố access sẽ không nhận được data mặc
 # dù server vẫn đang chạy. Muốn khắc phục phải chỉ định IP 0.0.0.0:8000, tức đón nhận MỌI local IP port 8000.
-# Và đồng thời, trong setting app cũng phải ALLOW_HOST là host máy thì mới được.
+# Và đồng thời, trong setting users cũng phải ALLOW_HOST là host máy thì mới được.
 pipenv run python3 manage.py migrate
 pipenv run python3 manage.py runserver 0.0.0.0:8000
